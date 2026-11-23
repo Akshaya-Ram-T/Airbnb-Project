@@ -56,7 +56,7 @@ store.on("error",()=>{
 
 const sessionOptions={
     store: store,
-    secret: "mysupersecretcode",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie:{
@@ -68,16 +68,7 @@ const sessionOptions={
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const sessionOptions={
-    secret: "mysupersecretcode",
-    resave: false,
-    saveUninitialized: true,
-    cookie:{
-        expires: Date.now()+7*24*60*60*1000,
-        maxAge: 7*24*60*60*1000,
-        httpOnly: true,
-    },
-};
+
 
 app.get("/",(req,res)=>{
     res.send("Hi, I am root");
