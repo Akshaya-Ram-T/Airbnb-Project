@@ -32,7 +32,7 @@ main()
        
 
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
+    await mongoose.connect(dbUrl);
 }
 
 app.set("view engine","ejs")
@@ -42,15 +42,17 @@ app.use(methodOverride("_method"));
 app.engine("ejs",engine);
 app.use(express.static(path.join(__dirname,"/public")));
 
-const store = MongoStore.createKrupteinAdapter({
+const store = MongoStore.create({
     mongoUrl: dbUrl,
-    secret: process.env.SECRET,
+    crypto: {
+        secret: process.env.SECRET,
+    },
     touchAfter: 24 * 3600,
 });
 
-store.on("error",()=>{
-    console.log("ERROR in MONGO SESSION STORE",err);
-})
+//store.on("error", (err) => {
+ //   console.log("ERROR in MONGO SESSION STORE", err);
+//});
 
 const sessionOptions={
     store: store,
@@ -133,7 +135,7 @@ app.use((err,req,res,next)=>{
     // res.status(statusCode).send(message);
 })
 
-app.listen(3000,()=>{
+app.listen(process.env.PORT || 3000,()=>{
     console.log("Server listening on 3000");
 });
 
