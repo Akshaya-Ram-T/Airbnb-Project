@@ -1,6 +1,8 @@
 <% layout("/layouts/boilerplate") %>
 <script>
     const mapToken="<%= mapToken %>";
+    const listingLocation=<%- JSON.stringify(listing.geomentry && listing.geomentry.coordinates ? listing.geomentry.coordinates : [0, 0]) %>;
+    const listingTitle=<%- JSON.stringify(listing.title) %>;
 </script>
     <div class="row">
 

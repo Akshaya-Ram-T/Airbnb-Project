@@ -1,4 +1,29 @@
 const Listing=require("../models/listing");
+const mbxGeocoding=require("@mapbox/mapbox-sdk/services/geocoding");
+const geocodingClient=mbxGeocoding({ accessToken: process.env.MAP_TOKEN });
+
+async function geocodeLocation(location, country) {
+    if (!process.env.MAP_TOKEN) {
+        console.error("MAP_TOKEN environment variable is missing");
+        return { type: "Point", coordinates: [0, 0] };
+    }
+
+    try {
+        const query=[location, country].filter(Boolean).join(", ");
+        const response=await geocodingClient
+            .forwardGeocode({ query, limit: 1 })
+            .send();
+
+        if (!response.body.features.length) {
+            throw new Error("Could not find that location on the map");
+        }
+
+        return response.body.features[0].geometry;
+    } catch (error) {
+        console.error("Mapbox geocoding failed:", error.message);
+        return { type: "Point", coordinates: [0, 0] };
+    }
+}
 
 module.exports.index=async(req,res)=>{
     const allListings=await Listing.find({});
@@ -27,7 +52,9 @@ module.exports.showListing = async (req, res) => {
 };
 
 module.exports.createListing = async (req, res) =>{
+    const geometry=await geocodeLocation(req.body.listing.location, req.body.listing.country);
     const newListing =new Listing(req.body.listing);
+    newListing.geomentry=geometry;
     newListing.owner = req.user._id;
     newListing.image = {
         url: `/uploads/${req.file.filename}`,
@@ -55,7 +82,12 @@ module.exports.renderEditForm = async (req, res) =>{
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
-    let listing=await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { runValidators: true });
+    const geometry=await geocodeLocation(req.body.listing.location, req.body.listing.country);
+    let listing=await Listing.findByIdAndUpdate(
+        id,
+        { ...req.body.listing, geomentry: geometry },
+        { runValidators: true }
+    );
     
     if (req.file){
         listing.image={
