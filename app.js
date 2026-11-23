@@ -35,9 +35,13 @@ if (process.env.NODE_ENV === "production") {
 main()
     .then(() => {
         console.log("Connected to MongoDB");
+        app.listen(process.env.PORT || 3000, () => {
+            console.log(`Server listening on port ${process.env.PORT || 3000}`);
+        });
     })
     .catch((err) => {
         console.error("MongoDB connection failed:", err);
+        process.exit(1);
     });
 
 async function main() {
@@ -143,10 +147,6 @@ app.use((err,req,res,next)=>{
     let{statusCode=500,message="Something went wrong!"}=err;
     res.status(statusCode).render("error.ejs",{message});
 })
-
-app.listen(process.env.PORT || 3000,()=>{
-    console.log(`Server listening on port ${process.env.PORT || 3000}`);
-});
 
 
 
