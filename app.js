@@ -42,12 +42,10 @@ app.use(methodOverride("_method"));
 app.engine("ejs",engine);
 app.use(express.static(path.join(__dirname,"/public")));
 
-const store=MongoStore.createKrupteinAdapter({
+const store = MongoStore.createKrupteinAdapter({
     mongoUrl: dbUrl,
-    crypto:{
-        secret: process.env.SECRET,
-    },
-    touchAfter: 24*3600,
+    secret: process.env.SECRET,
+    touchAfter: 24 * 3600,
 });
 
 store.on("error",()=>{
