@@ -70,8 +70,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 
-app.get("/",(req,res)=>{
-    res.send("Hi, I am root");
+app.get("/", (req, res) => {
+    res.redirect("/listings");
 });
 
 
