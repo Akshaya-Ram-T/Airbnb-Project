@@ -122,6 +122,9 @@ Signed cookies protect data from tampering, but they do not hide or encrypt the 
   
 > Stateless Protocol
   ex: http
+
+Project Workflow:
+
           
           
           
