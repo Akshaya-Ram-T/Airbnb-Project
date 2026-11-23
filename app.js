@@ -22,14 +22,23 @@ const userRouter=require("./routes/user.js");
 const {saveRedirectUrl}=require("./middleware.js");
 //const MONGO_URL="mongodb://127.0.0.1:27017//wanderlust";
 const dbUrl=process.env.ATLASDB_URL;
+
+if (process.env.NODE_ENV === "production") {
+    if (!dbUrl) {
+        throw new Error("ATLASDB_URL environment variable is missing");
+    }
+    if (!process.env.SECRET) {
+        throw new Error("SECRET environment variable is missing");
+    }
+}
+
 main()
-    .then(()=>{
+    .then(() => {
         console.log("Connected to MongoDB");
     })
-    .catch((err)=>{
-        console.log(err)
+    .catch((err) => {
+        console.error("MongoDB connection failed:", err);
     });
-       
 
 async function main() {
     await mongoose.connect(dbUrl || "mongodb://127.0.0.1:27017/wanderlust");
@@ -130,9 +139,9 @@ app.use((req, res, next) => {
 });
 
 app.use((err,req,res,next)=>{
-    let{statusCode=500,message="Somethig went wrong!"}=err;
+    console.error("Application error:", err);
+    let{statusCode=500,message="Something went wrong!"}=err;
     res.status(statusCode).render("error.ejs",{message});
-    // res.status(statusCode).send(message);
 })
 
 app.listen(process.env.PORT || 3000,()=>{
