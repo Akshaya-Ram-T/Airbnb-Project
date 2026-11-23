@@ -24,7 +24,7 @@ const {saveRedirectUrl}=require("./middleware.js");
 const dbUrl=process.env.ATLASDB_URL;
 main()
     .then(()=>{
-        console.log("Connected ");
+        console.log("Connected to MongoDB");
     })
     .catch((err)=>{
         console.log(err)
@@ -32,7 +32,7 @@ main()
        
 
 async function main() {
-    await mongoose.connect(dbUrl);
+    await mongoose.connect(dbUrl || "mongodb://127.0.0.1:27017/wanderlust");
 }
 
 app.set("view engine","ejs")
@@ -42,7 +42,7 @@ app.use(methodOverride("_method"));
 app.engine("ejs",engine);
 app.use(express.static(path.join(__dirname,"/public")));
 
-const store = MongoStore.create({
+const store = new MongoStore.MongoStore({
     mongoUrl: dbUrl,
     crypto: {
         secret: process.env.SECRET,
@@ -136,7 +136,7 @@ app.use((err,req,res,next)=>{
 })
 
 app.listen(process.env.PORT || 3000,()=>{
-    console.log("Server listening on 3000");
+    console.log(`Server listening on port ${process.env.PORT || 3000}`);
 });
 
 

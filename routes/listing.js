@@ -79,6 +79,8 @@ router
     .put(
         isLoggedIn,
         isOwner,
+        uploadListingImage,
+        normalizeListingImage,
         validateListing,
         wrapAsync(listingController.updateListing)
     )
