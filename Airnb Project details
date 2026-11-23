@@ -1,0 +1,132 @@
+---- PROJECT AIRNB ------
+
+Details:
+
+XML- Extensible Markup Language
+   - It is a text based format used to store and transport structured data
+   - uses common tags like <>
+   
+EJS- Embedded JavaScript Templates
+   - is a template engine that allows us to write HTML and insert JavaScript/data into it.
+   -ejs:<h1>Welcome <%= username %></h1>
+   -js: username = "Akshaya"
+   -html: <h1>Welcome Akshaya</h1>
+
+NodeJS- It is a js runtime that allows us to run js outside the browser
+      - we use it run js on server, build backend application , create apis,communicate with db
+      
+ExpressJS- It is a web framework for Nodejs
+         - It gives us the environment to run JS on the server
+         - Express makes it much easier to create the server and handle http requests
+         - We can create a server using NodeJs , but handling routes and requests becomes more complicated.
+         - it provides routing,middleware,support,request handling, error handling
+         
+         
+Middleware- It is a function that runs between the request and the final response
+          - flow is : client->req->middleware->route/controller->response
+          - It can check authentication,validate data,log requests,modify req/response,handle errors,perform other processing
+          - interview: it is func that has access to req,res and next func, and used to perform operaitions during the request-res cycle before passing control to the next middleware or route handler.
+          
+          
+          
+MongoDB- It is a NoSQL db that stores data in docu rather than row and tables
+       - it stores documents in collections.
+       - it has flexible schema,stores json-like docu,easy to work with js,supports large amounts of data
+       
+       
+Mongoose- It is an ODM(obejct data modeling) library for mongodb and nodejs
+        - It makes working with mongodb easier from nodejs 
+        - Why MONGOOSE: it provides schemas,models,validation,middlewares/hooks,query methods,relationships, easy interaction with mongodb
+          
+          
+          
+Joi- It is a JS Lib used for data validation
+   - It check whether incoming data follows the rules we specify    
+   - We use joi because users can send bad or unexpected data to our API
+   
+   Joi VS Mongoose: Joi validates incoming req data, mongoose validates data according to the model/schema       
+          
+          
+          
+          
+----------- ROUTING ------------
+Routing means deciding what should happen when a user/client requests a particular URL and HTTP method.
+          
+app.get("/home", (req, res) => {
+    res.send("Welcome Home");
+});
+      ->   GET → HTTP method
+      ->   /home → route/path
+      ->   Function → what to do when /home is requested
+      
+---> why we use Routing:
+     it is used to create different URL's for different functionalities of our application.
+     ex: /       ->Home
+         /about  -> About page
+         /products ->Products
+         
+----> When do we use Routing?
+      We use routing whenever our application needs to respond differently to different requests.
+
+express.Router() allows us to create separate, modular routes and then connect them to our main Express application.
+
+Instead of putting every route inside app.js, we can divide them into separate files.
+
+Why do we use Express Router?
+Main reasons:
+Organization - We can keep user routes separate from product routes.
+Modularity
+
+Each route file handles a particular functionality.
+
+Maintainability - Large applications become easier to understand and modify.
+
+Reusability - A router can be mounted under a particular path.
+
+
+
+
+------- Cookies ---------
+A cookie is a small piece of data that a website stores in the user's browser.
+It is mainly used to remember information between requests.
+
+> create cookie
+
+app.get("/setcookie", (req, res) => {
+    res.cookie("username", "Akshaya");
+    res.send("Cookie set");
+});
+
+> cookie parse -- To read it,
+const cookieParser = require("cookie-parser");
+
+app.use(cookieParser());
+
+app.get("/readcookie", (req, res) => {
+    console.log(req.cookies.username);
+    res.send("Cookie read");
+});
+
+
+>>> What is signed cookie
+A signed cookie is a cookie that has an additional signature generated using a secret key.
+Its purpose is to detect whether the cookie has been modified/tampered with by the user.
+Signed cookies protect data from tampering, but they do not hide or encrypt the data.
+
+
+--- State ----
+
+> Stateful Protocol
+  ex: ftp
+  
+  
+> Stateless Protocol
+  ex: http
+          
+          
+          
+          
+          
+          
+          
+          

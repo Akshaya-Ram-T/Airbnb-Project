@@ -1,0 +1,82 @@
+.starability-slot {
+    border: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.starability-slot input {
+    position: absolute;
+    opacity: 0;
+}
+
+.starability-slot label {
+    display: inline-block;
+    width: 1.55rem;
+    height: 1.55rem;
+    overflow: visible;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.starability-slot label::before {
+    content: "★";
+    font-size: 1.55rem;
+}
+
+/* Selected rating: first star to selected star */
+.starability-slot:has(#first-rate1:checked) label[for="first-rate1"],
+.starability-slot:has(#first-rate2:checked) label[for="first-rate1"],
+.starability-slot:has(#first-rate2:checked) label[for="first-rate2"],
+.starability-slot:has(#first-rate3:checked) label[for="first-rate1"],
+.starability-slot:has(#first-rate3:checked) label[for="first-rate2"],
+.starability-slot:has(#first-rate3:checked) label[for="first-rate3"],
+.starability-slot:has(#first-rate4:checked) label[for="first-rate1"],
+.starability-slot:has(#first-rate4:checked) label[for="first-rate2"],
+.starability-slot:has(#first-rate4:checked) label[for="first-rate3"],
+.starability-slot:has(#first-rate4:checked) label[for="first-rate4"],
+.starability-slot:has(#first-rate5:checked) label {
+    color: #ffc107;
+}
+
+/* Hover preview: left-to-right */
+.starability-slot:has(label[for="first-rate1"]:hover) label[for="first-rate1"],
+.starability-slot:has(label[for="first-rate2"]:hover) label[for="first-rate1"],
+.starability-slot:has(label[for="first-rate2"]:hover) label[for="first-rate2"],
+.starability-slot:has(label[for="first-rate3"]:hover) label[for="first-rate1"],
+.starability-slot:has(label[for="first-rate3"]:hover) label[for="first-rate2"],
+.starability-slot:has(label[for="first-rate3"]:hover) label[for="first-rate3"],
+.starability-slot:has(label[for="first-rate4"]:hover) label[for="first-rate1"],
+.starability-slot:has(label[for="first-rate4"]:hover) label[for="first-rate2"],
+.starability-slot:has(label[for="first-rate4"]:hover) label[for="first-rate3"],
+.starability-slot:has(label[for="first-rate4"]:hover) label[for="first-rate4"],
+.starability-slot:has(label[for="first-rate5"]:hover) label {
+    color: #ffc107;
+}
+
+.starability-slot label:hover {
+    transform: scale(1.15);
+}
+
+/* Saved review rating */
+.starability-result {
+    display: inline-block;
+    height: auto;
+    overflow: visible;
+    color: #ffc107;
+    font-size: 1.55rem;
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
+.starability-result::before {
+    content: "☆ ☆ ☆ ☆ ☆";
+    letter-spacing: 1px;
+}
+
+.starability-result[data-rating="1"]::before { content: "★ ☆ ☆ ☆ ☆"; }
+.starability-result[data-rating="2"]::before { content: "★ ★ ☆ ☆ ☆"; }
+.starability-result[data-rating="3"]::before { content: "★ ★ ★ ☆ ☆"; }
+.starability-result[data-rating="4"]::before { content: "★ ★ ★ ★ ☆"; }
+.starability-result[data-rating="5"]::before { content: "★ ★ ★ ★ ★"; }
